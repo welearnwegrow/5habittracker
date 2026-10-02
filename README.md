@@ -58,7 +58,7 @@ There's no build step and there are no dependencies. It's static files served by
 
 ## Feedback
 
-Found a bug, or have an idea? [Open an issue](https://github.com/welearnwegrow/5habittracker/issues). Notes on how you're using it are welcome too.
+Found a bug, or have an idea? [Contact the creator](https://welearnwegrow.bio/). Notes on how you're using it are welcome too.
 
 ---
 
