@@ -1,11 +1,18 @@
 {
   "name": "5 Habit Tracker",
   "short_name": "5 Habits",
+  "description": "A five-habit tracker. Complete all five habits in a day to draw a new generative kolam, and keep going for 30 days to reveal a hidden avatar.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f2ead5",
-  "theme_color": "#f2ead5",
+  "orientation": "portrait",
+  "background_color": "#fbf9f3",
+  "theme_color": "#fbf9f3",
+  "categories": [
+    "lifestyle",
+    "health",
+    "productivity"
+  ],
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -20,9 +27,20 @@
       "purpose": "any"
     },
     {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
       "src": "icons/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png"
+    },
+    {
+      "src": "icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
     }
   ]
 }

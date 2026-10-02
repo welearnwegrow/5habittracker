@@ -1,15 +1,19 @@
 # 5 Habit Tracker
 
-A monthly tracker for five daily habits.
+Five habits a day. Each full day draws a generative kolam; thirty full days (28 in February) reveal a hidden avatar.
 
-- `index.html` — the tracker
-- `log.html` — day-by-day log for any month
+Live: https://welearnwegrow.github.io/5habittracker/
+
+## Files
+- `index.html` — the whole app (Start, Tracker and Collection screens)
+- `avatars.js` — the generative kolam and avatar artwork
+- `manifest.json`, `icons/` — home-screen app name and icons
 
 ## Deploy
-Upload all files (keep the `icons/` folder) to a GitHub repo, then enable GitHub Pages (Settings → Pages → Deploy from branch → main / root).
+Upload these files to the repo root (keep `icons/`), then Settings → Pages → Deploy from branch → `main` / root.
 
-## Add to home screen
-- **iPhone (Safari):** Share → Add to Home Screen
-- **Android (Chrome):** ⋮ menu → Add to Home screen / Install app
+## Install on your phone
+- iPhone (Safari): Share → Add to Home Screen
+- Android (Chrome): ⋮ → Add to Home screen / Install app
 
-Data is stored in the browser on your device (localStorage). Use *Download data (CSV)* to back it up.
+Data is stored on your device only. Use Calendar → Download CSV to back it up.
