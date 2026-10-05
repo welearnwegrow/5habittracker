@@ -15,7 +15,7 @@
 1. **Choose five habits** for the month. Keep them small enough to do on a busy day: walk for 20 minutes, read 10 pages, drink water before coffee.
 2. **Tick them off each day.** Use the arrows to move between days, or open the calendar to jump to any day this month.
 3. **Complete all five, and a kolam appears.** Each one is generated from that day's date, so no two are alike. Some days you'll draw a rare or legendary one, with more rings, more colour and finer symmetry.
-4. **Keep going for 30 days** (28 in February) and that month's avatar draws itself and comes to life. There are twelve, one for each month, all from Indian folk art. Which one you get stays a surprise until you get there.
+4. **Reach 25 full days in the month** and that month's avatar draws itself and comes to life. There are twelve, one for each month, all from Indian folk art. The aim is 30 days, but 25 is enough, so you have a grace day each week. Which one you get stays a surprise until you get there.
 5. **Start fresh each month.** Keep the same five habits or choose new ones. Every kolam and avatar you've earned stays in your Collection.
 
 A new quote appears each day, from people like Wangari Maathai, Rabindranath Tagore, Thich Nhat Hanh and Nelson Mandela, and from proverbs around the world.
