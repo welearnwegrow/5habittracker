@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;display=swap">
+<style>
+html,body{margin:0;background:#fbf9f3;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+a{color:#1f3d44;text-decoration:none;}
+a:hover{color:#a8b82a;}
+::selection{background:#2f8a99;color:#fbf9f3;}
+textarea:focus{outline:none;}
+textarea::placeholder{color:#87999c;}
+@keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+@keyframes fadein{from{opacity:0;}to{opacity:1;}}
+</style>
+</helmet>
+
+<div style="min-height:100dvh;color:#1f3d44;font-family:'Hanken Grotesk',sans-serif;max-width:480px;margin:0 auto;background:#fbf9f3;padding-bottom:calc(env(safe-area-inset-bottom) + 40px);">
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
+<div>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(env(safe-area-inset-top) + 16px) 16px 0 20px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;">{{ dayMonthLabel }}</div>
+    <div style="display:flex;align-items:center;gap:8px;">
+    <button type="button" onClick="{{ goCollection }}" aria-label="Your dashboard" style="width:42px;height:42px;border-radius:999px;background:#ffffff;border:1px solid #d6e2df;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#1f3d44" stroke-width="2" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="9" rx="1.6"></rect><rect x="13.5" y="3.5" width="7" height="5" rx="1.6"></rect><rect x="13.5" y="11.5" width="7" height="9" rx="1.6"></rect><rect x="3.5" y="15.5" width="7" height="5" rx="1.6"></rect></svg>
+    </button>
+    </div>
+  </div>
+
+  <div style="padding:34px 20px 0;text-align:center;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
+      <button onClick="{{ dayPrev }}" disabled="{{ noDayPrev }}" aria-label="Previous day" style="width:40px;height:40px;flex:0 0 auto;border-radius:999px;background:#ffffff;border:1px solid #d6e2df;color:#1f3d44;font-family:inherit;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:{{ dayPrevOp }};">‹</button>
+      <div style="font-size:14px;font-weight:700;color:#2f4d53;min-width:0;">{{ dateSub }}</div>
+      <button onClick="{{ dayNext }}" disabled="{{ noDayNext }}" aria-label="Next day" style="width:40px;height:40px;flex:0 0 auto;border-radius:999px;background:#ffffff;border:1px solid #d6e2df;color:#1f3d44;font-family:inherit;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:{{ dayNextOp }};">›</button>
+    </div>
+    <sc-if value="{{ notToday }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ backToday }}" style="margin-top:8px;padding:6px 12px;background:none;border:1px solid #b7cbc7;border-radius:999px;color:#3d5a60;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;">Back to today</button>
+    </sc-if>
+    
+    
+    <div style="margin:18px auto 0;max-width:36ch;">
+      <div style="font-size:17px;line-height:1.45;font-weight:500;color:#2f4d53;text-wrap:pretty;">{{ quoteText }}</div>
+      <div style="font-size:13px;color:#5b7479;margin-top:8px;">{{ quoteWho }}</div>
+    </div>
+  </div>
+
+  <div style="padding:26px 20px 0;display:flex;flex-direction:column;gap:8px;">
+    <sc-for list="{{ habits }}" as="h" hint-placeholder-count="5">
+      <button onClick="{{ h.toggle }}" style="width:100%;display:flex;align-items:center;gap:16px;padding:18px;background:#ffffff;border:1px solid {{ h.border }};border-radius:16px;cursor:pointer;text-align:left;font-family:inherit;color:#1f3d44;transition:border-color .2s;">
+        <span style="{{ h.check }}">
+          <sc-if value="{{ h.done }}" hint-placeholder-val="{{ false }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbf9f3" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+          </sc-if>
+        </span>
+        <span style="flex:1;min-width:0;font-size:17px;font-weight:600;color:{{ h.labelColor }};">{{ h.label }}</span>
+      </button>
+    </sc-for>
+    <textarea value="{{ notes }}" onChange="{{ setNotes }}" placeholder="A note about this day…" style="margin-top:10px;width:100%;min-height:92px;background:#ffffff;border:1px solid #d6e2df;border-radius:16px;padding:15px 17px;color:#1f3d44;font-family:inherit;font-size:16px;line-height:1.5;resize:vertical;"></textarea>
+    <div style="margin-top:10px;">
+      <sc-if value="{{ inGroup }}" hint-placeholder-val="{{ false }}">
+        <a href="https://chat.whatsapp.com/FL89pSbLDNB8dtXtjb5Cd7" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:9px 14px 9px 11px;background:#ffffff;border:1px solid #d6e2df;border-radius:999px;color:#1f7a4d;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1f7a4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z"></path><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"></path></svg>Group chat</a>
+      </sc-if>
+      <sc-if value="{{ notInGroup }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ openShare }}" style="display:inline-flex;align-items:center;gap:8px;padding:9px 14px 9px 11px;background:#ffffff;border:1px solid #d6e2df;border-radius:999px;color:#1f7a4d;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1f7a4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z"></path><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"></path></svg>Want company?</button>
+      </sc-if>
+    </div>
+    <sc-if value="{{ dayHasKolam }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ openKolam }}" style="margin-top:6px;width:100%;padding:16px;background:#ffffff;border:1px solid #d6e2df;border-radius:999px;color:#1f3d44;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;">View this day’s kolam</button>
+    </sc-if>
+  </div>
+
+
+</div>
+</sc-if>
+
+<!-- ============ CALENDAR ============ -->
+<!-- ============ DAY COMPLETE REVEAL ============ -->
+<sc-if value="{{ hasReveal }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:50;background:#fbf9f3;display:flex;justify-content:center;animation:fadein .35s ease both;">
+    <div style="max-width:480px;width:100%;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 30px) 20px calc(env(safe-area-inset-bottom) + 22px);">
+      <div style="text-align:center;animation:rise .6s .8s ease both;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#5b7479;">{{ rvKicker }}</div>
+      </div>
+      <div style="flex:1;min-height:250px;position:relative;margin:6px -20px;">
+        <x-import component-from-global-scope="avatar-canvas" from="./avatars.js" species="kolam" rarity="{{ rvRarity }}" seed="{{ rvSeed }}" reveal="{{ rvId }}" playing="true" density="1.2" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+      </div>
+      <div style="animation:rise .6s 1.4s ease both;">
+        <sc-if value="{{ rvHarvest }}" hint-placeholder-val="{{ false }}">
+          <button type="button" onClick="{{ goCollection }}" style="border:none;display:block;text-align:center;margin-top:14px;width:100%;padding:18px;background:#2f8a99;color:#fbf9f3;border-radius:999px;font-weight:800;font-size:16px;box-shadow:0 0 30px #2f8a9966;cursor:pointer;font-family:inherit;">Reveal this month’s surprise</button>
+        </sc-if>
+        <button onClick="{{ closeReveal }}" style="margin-top:12px;width:100%;padding:18px;background:#1f3d44;color:#fbf9f3;border:none;border-radius:999px;font-family:inherit;font-weight:700;font-size:16px;cursor:pointer;">Continue</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ============ WHATSAPP GROUP ============ -->
+<sc-if value="{{ hasShare }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;padding:16px;">
+    <div onClick="{{ closeShare }}" style="position:absolute;inset:0;background:rgba(31,61,68,.45);animation:fadein .25s ease both;"></div>
+    <div style="position:relative;width:100%;max-width:420px;max-height:calc(100dvh - 32px);overflow:auto;background:#fbf9f3;border-radius:24px;padding:22px 20px;box-shadow:0 20px 60px rgba(31,61,68,.3);animation:rise .3s ease both;">
+      <sc-if value="{{ shareStep1 }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div style="font-size:23px;font-weight:800;letter-spacing:-.02em;line-height:1.15;">Want company?</div>
+          <div style="font-size:16px;line-height:1.5;color:#2f4d53;margin-top:8px;text-wrap:pretty;">Do your 30 days alongside others in the <strong style="color:#1f3d44;">#5habits30days</strong> WhatsApp group.</div>
+          <a href="https://chat.whatsapp.com/FL89pSbLDNB8dtXtjb5Cd7" target="_blank" rel="noopener" onClick="{{ joined }}" style="display:block;margin-top:18px;padding:17px;background:#1f7a4d;color:#ffffff;border-radius:999px;text-align:center;font-weight:800;font-size:16px;">Join on WhatsApp</a>
+          <div style="font-size:13.5px;line-height:1.4;color:#5b7479;text-align:center;margin-top:8px;text-wrap:pretty;">We’ll copy your five habits so you can paste them as your first message.</div>
+          <button onClick="{{ closeShare }}" style="display:block;margin:10px auto 0;padding:8px;background:none;border:none;color:#5b7479;font-family:inherit;font-size:15px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;">Not now</button>
+          <div style="margin-top:14px;padding-top:12px;border-top:1px solid #e3ece9;font-size:12.5px;line-height:1.5;color:#5b7479;text-wrap:pretty;">
+            <div><strong style="color:#3d5a60;">Visibility:</strong> people who report their progress to others tend to stick with their goals more than people who track privately.</div>
+            <div style="margin-top:4px;"><strong style="color:#3d5a60;">Support:</strong> people who join a programme with friends are far more likely to finish it.</div>
+            <div style="margin-top:4px;"><strong style="color:#3d5a60;">Normal-making:</strong> when you see others showing up every day, showing up starts to feel like the default.</div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ============ KOLAM DETAIL ============ -->
+<sc-if value="{{ hasKolamView }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:40;background:#fbf9f3;display:flex;justify-content:center;animation:fadein .25s ease both;">
+    <div style="max-width:480px;width:100%;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 14px) 20px calc(env(safe-area-inset-bottom) + 30px);">
+      <button onClick="{{ closeKolam }}" aria-label="Close" style="width:44px;height:44px;background:none;border:none;cursor:pointer;display:flex;align-items:center;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1f3d44" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+      </button>
+      <div style="flex:1;min-height:300px;position:relative;margin:0 -20px;">
+        <x-import component-from-global-scope="avatar-canvas" from="./avatars.js" species="kolam" rarity="{{ kvRarity }}" seed="{{ kvSeed }}" playing="true" density="1.2" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:28px;font-weight:800;letter-spacing:-.025em;">{{ kvTitle }}</div>
+      </div>
+    </div>
+  </div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844}}">
+const KEY = '5ht_data';
+(() => { try { if (!localStorage.getItem(KEY)) for (let n = 20; n > 0; n--) { const v = localStorage.getItem('fht_v' + n); if (v) { localStorage.setItem(KEY, v); break; } } } catch (e) {} })();
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const WD = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const HCOL = ['#2f8a99','#e0b23a','#5bb8c9','#6b9e3a','#c98a2e'];
+const RCOL = { common: '#7cc4b0', rare: '#a8b82a', legendary: '#2f8a99' };
+const QUOTES = [
+  ['It always seems impossible until it is done.', 'Nelson Mandela'],
+  ['Education is the most powerful weapon which you can use to change the world.', 'Nelson Mandela'],
+  ['It does not matter how slowly you go, so long as you do not stop.', 'Confucius'],
+  ['The journey of a thousand miles begins with a single step.', 'Lao Tzu'],
+  ['Nature does not hurry, yet everything is accomplished.', 'Lao Tzu'],
+  ['As you start to walk on the way, the way appears.', 'Rumi'],
+  ['Yesterday I was clever, so I wanted to change the world. Today I am wise, so I am changing myself.', 'Rumi'],
+  ['The future depends on what you do today.', 'Mahatma Gandhi'],
+  ['Strength does not come from physical capacity. It comes from an indomitable will.', 'Mahatma Gandhi'],
+  ['You can\u2019t cross the sea merely by standing and staring at the water.', 'Rabindranath Tagore'],
+  ['Faith is the bird that feels the light when the dawn is still dark.', 'Rabindranath Tagore'],
+  ['Dream, dream, dream. Dreams transform into thoughts and thoughts result in action.', 'A. P. J. Abdul Kalam'],
+  ['If you want to shine like a sun, first burn like a sun.', 'A. P. J. Abdul Kalam'],
+  ['Another world is not only possible, she is on her way. On a quiet day, I can hear her breathing.', 'Arundhati Roy'],
+  ['Walk as if you are kissing the Earth with your feet.', 'Thich Nhat Hanh'],
+  ['There is no way to happiness. Happiness is the way.', 'Thich Nhat Hanh'],
+  ['The size of your dreams must always exceed your current capacity to achieve them.', 'Ellen Johnson Sirleaf'],
+  ['You are never too young to lead, and never too old to learn.', 'Kofi Annan'],
+  ['It\u2019s the little things citizens do. That\u2019s what will make the difference.', 'Wangari Maathai'],
+  ['Do your little bit of good where you are; it\u2019s those little bits of good put together that overwhelm the world.', 'Desmond Tutu'],
+  ['It is the possibility of a dream coming true that makes life interesting.', 'Paulo Coelho'],
+  ['You can cut all the flowers but you cannot keep spring from coming.', 'Pablo Neruda'],
+  ['Feet, what do I need you for when I have wings to fly?', 'Frida Kahlo'],
+  ['Little by little, the bird builds its nest.', 'West African proverb'],
+  ['If you want to go fast, go alone. If you want to go far, go together.', 'African proverb'],
+  ['Smooth seas do not make skillful sailors.', 'African proverb'],
+  ['When the roots are deep, there is no reason to fear the wind.', 'African proverb'],
+  ['Do not look where you fell, but where you slipped.', 'Liberian proverb'],
+  ['Rain does not fall on one roof alone.', 'Cameroonian proverb'],
+  ['When spider webs unite, they can tie up a lion.', 'Ethiopian proverb'],
+  ['The best time to plant a tree was twenty years ago. The second best is now.', 'Chinese proverb'],
+];
+const mk = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+const today0 = () => { const t = new Date(); t.setHours(0, 0, 0, 0); return t; };
+const firstOf = d => new Date(d.getFullYear(), d.getMonth(), 1);
+const dim = (y, m) => new Date(y, m + 1, 0).getDate();
+const isDone = (m, dn) => { const d = m && m.days[dn]; return !!d && m.habits.every((_, j) => d.ticks[j]); };
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+// kolams earned in a month (rarity: every 7th day legendary, every 3rd rare, plus chance)
+function monthInfo(data, k) {
+  const m = data.months[k], [y, mo] = k.split('-').map(Number), nd = dim(y, mo - 1), kolams = {};
+  let full = 0;
+  if (m) for (let dn = 1; dn <= nd; dn++) if (isDone(m, dn)) {
+    full++;
+    const seed = y * 10000 + mo * 100 + dn, r = mulberry32(seed)();
+    const rarity = full % 7 === 0 ? 'legendary' : full % 3 === 0 ? 'rare' : r < 0.05 ? 'legendary' : r < 0.2 ? 'rare' : 'common';
+    kolams[dn] = { seed, rarity, day: dn };
+  }
+  const need = 25;
+  return { m, y, mo, nd, kolams, full, need, ready: full >= need, harvested: !!(m && m.harvested), name: (m && m.avatarName) || '' };
+}
+const go = p => { window.location.hash = p; };
+const APP_URL = 'https://welearnwegrow.github.io/5habittracker/';
+const GROUP_URL = 'https://chat.whatsapp.com/FL89pSbLDNB8dtXtjb5Cd7';
+const touch = () => /iPhone|iPad|iPod|Android/.test(navigator.userAgent || '') || navigator.maxTouchPoints > 1;
+const shareMessage = habits => 'Hi everyone! My 5 habits for the next 30 days:\n' + habits.map((h, i) => (i + 1) + '. ' + h).join('\n') + '\n\n#5habits30days';
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    let data = {};
+    try { data = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+    if (!data.months) data.months = {};
+    const t = today0();
+    this.redirect = !data.months[mk(t)];
+    let day = t;
+    try { const j = sessionStorage.getItem('5ht_jump'); sessionStorage.removeItem('5ht_jump'); if (j) { const [y, mo, dn] = j.split('-').map(Number), v = new Date(y, mo - 1, dn); if (v <= t && data.months[mk(v)]) day = v; } } catch (e) {}
+    this.state = { data, day, viewMonth: firstOf(t), today: t.getTime(), reveal: null, revealId: 0, kolamView: null };
+  }
+  componentDidMount() {
+    if (this.redirect) { go('start'); return; }
+
+    // roll over at midnight so the date and daily quote refresh
+    this.tick = () => {
+      const t = today0();
+      if (t.getTime() === this.state.today) return;
+      const wasToday = this.state.day.getTime() === this.state.today;
+      if (!this.state.data.months[mk(t)]) { go('start'); return; }
+      this.setState(s => ({ today: t.getTime(), day: wasToday ? t : s.day, viewMonth: wasToday ? firstOf(t) : s.viewMonth }));
+    };
+    this.timer = setInterval(this.tick, 60000);
+    document.addEventListener('visibilitychange', this.tick);
+  }
+  componentWillUnmount() { clearInterval(this.timer); document.removeEventListener('visibilitychange', this.tick); }
+  openShare() {
+    const m = this.state.data.months[mk(this.state.day)] || this.state.data.months[mk(today0())]; if (!m) return;
+    this.setState({ share: { step: 1, text: shareMessage(m.habits) }, copied: false, copyFailed: false });
+  }
+  copyShare() {
+    const t = this.state.share && this.state.share.text; if (!t) return;
+    const done = () => this.setState({ copied: true }), failed = () => this.setState({ copied: false, copyFailed: true });
+    const fallback = () => { const a = document.createElement('textarea'); a.value = t; a.setAttribute('readonly', ''); a.style.cssText = 'position:fixed;opacity:0;'; document.body.appendChild(a); a.select(); let ok = false; try { ok = document.execCommand('copy'); } catch (e) {} a.remove(); ok ? done() : failed(); };
+    try { navigator.clipboard.writeText(t).then(done, fallback); } catch (e) { fallback(); }
+  }
+  // Join on WhatsApp: copy their five, remember they joined, then the link opens the group
+  joinGroup() {
+    this.copyShare();
+    const data = { ...this.state.data, joinedGroup: true };
+    this.save(data);
+    this.setState({ share: null });
+  }
+  save(data) { this.setState({ data }); try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {} }
+  patchDay(fn) {
+    const date = this.state.day, k = mk(date), dn = date.getDate();
+    const data = { ...this.state.data, months: { ...this.state.data.months } };
+    const m = { ...data.months[k], days: { ...data.months[k].days } };
+    const before = isDone(m, dn);
+    const d = { ticks: {}, notes: '', ...(m.days[dn] || {}) }; d.ticks = { ...d.ticks };
+    fn(d); m.days[dn] = d; data.months[k] = m;
+    let reveal = null;
+    if (!before && isDone(m, dn) && !d.revealed) {
+      d.revealed = true;
+      const info = monthInfo(data, k);
+      reveal = { kolam: info.kolams[dn], ready: info.ready && !info.harvested };
+    }
+    this.save(data);
+    if (reveal) this.setState(s => ({ reveal, revealId: s.revealId + 1 }));
+  }
+  renderVals() {
+    const { data, day, reveal, kolamView } = this.state, t = new Date(this.state.today);
+    const sh = this.state.share;
+    const out = { ready: !this.redirect, hasReveal: !!reveal, hasKolamView: !!kolamView, hasShare: !!sh }; out.goCollection = () => go('collection');
+    if (sh) Object.assign(out, { shareStep1: sh.step === 1, shareStep2: sh.step === 2, shareText: sh.text, joined: () => this.joinGroup(), step2Title: this.state.copyFailed && !this.state.copied ? 'Copy your five' : 'Your five are copied', step2Body: this.state.copyFailed && !this.state.copied ? 'Copy this and paste it as your first message in the group.' : 'Paste them as your first message in the group.', copyLabel: this.state.copied ? 'Copy again' : 'Copy message', copyBg: this.state.copied ? '#ffffff' : '#1f3d44', copyColor: this.state.copied ? '#1f3d44' : '#fbf9f3', copyShare: () => this.copyShare(), closeShare: () => this.setState({ share: null }) });
+    if (this.redirect) return out;
+    const info = monthInfo(data, mk(day)), m = info.m;
+    if (!m) return out;
+    const dn = day.getDate(), d = m.days[dn] || { ticks: {}, notes: '' }, kk = info.kolams[dn], isT = day.getTime() === t.getTime();
+    const step = k => { const v = new Date(day); v.setDate(v.getDate() + k); return v; };
+    const canStep = k => { const v = step(k); return v <= t && !!data.months[mk(v)]; };
+    const goStep = k => { if (canStep(k)) { const v = step(k); this.setState({ day: v, viewMonth: firstOf(v) }); } };
+    const qi = Math.floor(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate()) / 86400000) % QUOTES.length;
+    Object.assign(out, {
+      dayMonthLabel: MONTHS[day.getMonth()] + ' ' + day.getFullYear(),
+      dateSub: (isT ? 'Today \u00b7 ' : '') + WD[day.getDay()] + ', ' + MONTHS[day.getMonth()] + ' ' + dn,
+      noDayPrev: !canStep(-1), noDayNext: !canStep(1), dayPrevOp: canStep(-1) ? 1 : 0.3, dayNextOp: canStep(1) ? 1 : 0.3,
+      dayPrev: () => goStep(-1), dayNext: () => goStep(1),
+      notToday: !isT, backToday: () => this.setState({ day: t, viewMonth: firstOf(t) }),
+      quoteText: '\u201C' + QUOTES[qi][0] + '\u201D', quoteWho: QUOTES[qi][1],
+      habits: m.habits.map((label, j) => {
+        const done = !!d.ticks[j], c = HCOL[j];
+        return {
+          label, done, border: done ? c + '55' : '#d6e2df', labelColor: done ? '#1f3d44' : '#3d5a60',
+          check: 'width:28px;height:28px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;transition:all .25s ease;' + (done ? 'background:' + c + ';' : 'border:2px solid ' + c + '88;'),
+          toggle: () => this.patchDay(x => { x.ticks[j] = !x.ticks[j]; }),
+        };
+      }),
+      notes: d.notes,
+      setNotes: e => { const v = e.target.value; this.patchDay(x => { x.notes = v; }); },
+      dayHasKolam: !!kk, openKolam: () => kk && this.setState({ kolamView: kk }),
+      openShare: () => this.openShare(), inGroup: !!data.joinedGroup, notInGroup: !data.joinedGroup,
+    });
+    if (reveal) Object.assign(out, {
+      rvKicker: 'Day ' + reveal.kolam.day + ' complete',
+      rvRarity: reveal.kolam.rarity, rvSeed: reveal.kolam.seed, rvId: this.state.revealId,
+      rvHarvest: reveal.ready, closeReveal: () => this.setState({ reveal: null }),
+    });
+    if (kolamView) Object.assign(out, {
+      kvRarity: kolamView.rarity, kvSeed: kolamView.seed, kvTitle: MONTHS[day.getMonth()] + ' ' + kolamView.day,
+      closeKolam: () => this.setState({ kolamView: null }),
+    });
+    return out;
+  }
+}
+</script>
+</body>
+</html>

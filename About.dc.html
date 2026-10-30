@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;display=swap">
+<style>
+html,body{margin:0;background:#fbf9f3;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+a{color:#2f8a99;text-decoration:none;}
+a:hover{color:#1f3d44;}
+</style>
+</helmet>
+<div style="min-height:100dvh;background:#fbf9f3;color:#1f3d44;font-family:'Hanken Grotesk',sans-serif;">
+  <div style="max-width:480px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 14px) 22px 10px;">
+    <button onClick="{{ back }}" aria-label="Back" style="width:44px;height:44px;margin-left:-10px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1f3d44" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+
+
+    <div style="font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#2f8a99;margin-top:18px;">About</div>
+    <h1 style="font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1.05;margin:10px 0 0;text-wrap:balance;">Five habits. Thirty days. One kolam for every day you show up.</h1>
+    <p style="font-size:16px;line-height:1.6;color:#2f4d53;margin:16px 0 0;text-wrap:pretty;">5 Habit Tracker is a tiny app for keeping five habits for a month. It has no streak shaming, no accounts and no notifications. You tick off your five habits, and on each day you complete all of them, a new kolam draws itself on your screen.</p>
+
+    <h2 style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin:40px 0 4px;">How it works</h2>
+    <div style="display:flex;flex-direction:column;">
+      <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid #e3ece9;">
+        <span style="width:28px;height:28px;flex:0 0 auto;border-radius:50%;background:#2f8a99;color:#fbf9f3;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">1</span>
+        <div style="font-size:15px;line-height:1.55;color:#2f4d53;"><strong style="color:#1f3d44;">Choose five habits</strong> for the month. Keep them small enough to do on a busy day: walk for 20 minutes, read 10 pages, drink water before coffee.</div>
+      </div>
+      <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid #e3ece9;">
+        <span style="width:28px;height:28px;flex:0 0 auto;border-radius:50%;background:#e0b23a;color:#1f3d44;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">2</span>
+        <div style="font-size:15px;line-height:1.55;color:#2f4d53;"><strong style="color:#1f3d44;">Tick them off each day.</strong> Use the arrows to move between days, or open Your Dashboard (the four-tile icon) to see the whole month and jump to any day this month.</div>
+      </div>
+      <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid #e3ece9;">
+        <span style="width:28px;height:28px;flex:0 0 auto;border-radius:50%;background:#5bb8c9;color:#1f3d44;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">3</span>
+        <div style="font-size:15px;line-height:1.55;color:#2f4d53;"><strong style="color:#1f3d44;">Complete all five, and a kolam appears.</strong> Each one is generated from that day's date, so no two are alike. Some days you'll draw a rare or legendary one, with more rings, more colour and finer symmetry.</div>
+      </div>
+      <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid #e3ece9;">
+        <span style="width:28px;height:28px;flex:0 0 auto;border-radius:50%;background:#6b9e3a;color:#fbf9f3;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">4</span>
+        <div style="font-size:15px;line-height:1.55;color:#2f4d53;"><strong style="color:#1f3d44;">Reach 25 full days in the month</strong>, which leaves a grace day each week, and this month’s surprise is revealed: one of twelve animals from Indian folk art. Which one stays a surprise until you get there.</div>
+      </div>
+      <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid #e3ece9;border-bottom:1px solid #e3ece9;">
+        <span style="width:28px;height:28px;flex:0 0 auto;border-radius:50%;background:#c98a2e;color:#fbf9f3;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">5</span>
+        <div style="font-size:15px;line-height:1.55;color:#2f4d53;"><strong style="color:#1f3d44;">Start fresh each month.</strong> Keep the same five habits or choose new ones. Every kolam and animal you've earned stays in Your collection, on Your Dashboard.</div>
+      </div>
+    </div>
+    <p style="font-size:15px;line-height:1.6;color:#3d5a60;margin:16px 0 0;text-wrap:pretty;">A new quote appears each day, from people like Wangari Maathai, Rabindranath Tagore, Thich Nhat Hanh and Nelson Mandela, and from proverbs around the world.</p>
+
+    <h2 style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin:40px 0 0;">Why kolams?</h2>
+    <p style="font-size:16px;line-height:1.6;color:#2f4d53;margin:12px 0 0;text-wrap:pretty;">A kolam is a design drawn each morning at the threshold of a home in South India, traditionally in rice flour. It's made by hand, in a few minutes, and it's gone by evening. It is a daily practice and a small act of care that you repeat, not something you make once and keep.</p>
+    <p style="font-size:16px;line-height:1.6;color:#2f4d53;margin:12px 0 0;text-wrap:pretty;">That felt like the right way to think about habits. You don't build one big result. You make something small, every day, and over a month those small things add up to a pattern.</p>
+
+    <h2 style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin:40px 0 0;">Why it works</h2>
+    <p style="font-size:16px;line-height:1.6;color:#2f4d53;margin:12px 0 0;text-wrap:pretty;">The app is built around two ideas from neuroscience.</p>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:12px;font-size:15px;line-height:1.55;color:#2f4d53;">
+      <div><strong style="color:#1f3d44;">Context and reward train the striatum.</strong> The basal ganglia, and the striatum within them, learn which action to take in a given situation from reward. Doing the same five things in the same daily context, and getting a kolam when you finish, gives that system a clear context and a clear reward.</div>
+      <div><strong style="color:#1f3d44;">Small and daily beats big and rare.</strong> Lasting memories need the brain to change the connections between neurons, and sleep helps those changes last. One small session a day, with a night's sleep in between, suits how that consolidation works better than one long push.</div>
+    </div>
+    <div style="margin-top:16px;padding:14px 16px;background:#ffffff;border:1px solid #d6e2df;border-radius:14px;font-size:13px;line-height:1.55;color:#3d5a60;display:flex;flex-direction:column;gap:8px;">
+      <div style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#6b8387;">Research</div>
+      <div>Shivkumar, S., Muralidharan, V. &amp; Chakravarthy, V. S. (2017). A biologically plausible architecture of the striatum to solve context-dependent reinforcement learning tasks. <em>Frontiers in Neural Circuits</em>, 11:45. IIT Madras, India. <a href="https://doi.org/10.3389/fncir.2017.00045" target="_blank" rel="noopener">doi:10.3389/fncir.2017.00045</a></div>
+      <div>Rennó-Costa, C., Costa da Silva, A. C., Blanco, W. &amp; Ribeiro, S. (2019). Computational models of memory consolidation and long-term synaptic plasticity during sleep. <em>Neurobiology of Learning and Memory</em>, 160, 32–47. UFRN, Brazil. <a href="https://doi.org/10.1016/j.nlm.2018.10.003" target="_blank" rel="noopener">doi:10.1016/j.nlm.2018.10.003</a></div>
+    </div>
+
+    <h2 style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin:40px 0 0;">Add it to your phone</h2>
+    <div style="margin-top:12px;">
+      <dc-import name="InstallGuide" hint-size="100%,420px"></dc-import>
+    </div>
+
+    <h2 style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin:40px 0 0;">Do it with others</h2>
+    <p style="font-size:16px;line-height:1.6;color:#2f4d53;margin:12px 0 0;text-wrap:pretty;">Tap <strong style="color:#1f3d44;">Want company?</strong> under your notes to join the <strong style="color:#1f3d44;">#5habits30days</strong> WhatsApp group. We copy your five habits so you can paste them as your first message. It’s optional, and the group is a place to cheer each other on: missed a day? Just post the next one.</p>
+    <p style="font-size:16px;line-height:1.6;color:#2f4d53;margin:12px 0 0;text-wrap:pretty;"><a href="https://chat.whatsapp.com/FL89pSbLDNB8dtXtjb5Cd7" target="_blank" rel="noopener" style="font-weight:700;">Join the group on WhatsApp</a></p>
+
+    <h2 style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin:40px 0 0;">Your data</h2>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;font-size:15px;line-height:1.55;color:#2f4d53;">
+      <div>Everything is stored <strong style="color:#1f3d44;">on your device only</strong>, in your browser's local storage. Nothing is sent anywhere.</div>
+      <div>There's no login, so if you clear your browser data or switch phones, your progress won't come with you.</div>
+      <div>To keep a copy, open Your Dashboard and tap <strong style="color:#1f3d44;">Download CSV</strong>. You get one row per day, with each of your five habits and whether you did it, plus your notes.</div>
+    </div>
+
+    <h2 style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin:40px 0 0;">Feedback</h2>
+    <p style="font-size:16px;line-height:1.6;color:#2f4d53;margin:12px 0 0;text-wrap:pretty;">Found a bug, or have an idea? <a href="https://welearnwegrow.bio/" target="_blank" rel="noopener" style="font-weight:700;">Contact the creator</a>. Notes on how you're using it are welcome too.</p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844}}">
+if (!window.__fhtInstall) { window.__fhtInstall = { e: null }; window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); window.__fhtInstall.e = e; }); }
+class Component extends DCLogic {
+  componentDidMount() { this.poll = setInterval(() => this.forceUpdate(), 1500); }
+  componentWillUnmount() { clearInterval(this.poll); }
+  renderVals() {
+    const ua = navigator.userAgent || '';
+    const ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1), android = /Android/.test(ua);
+    const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+    const prompt = window.__fhtInstall && window.__fhtInstall.e, t = new Date();
+    let installText = 'It works like an app once it\u2019s on your home screen. On iPhone, open this page in Safari, tap Share, then Add to Home Screen. On Android, open it in Chrome, tap \u22ee, then Install app.';
+    if (standalone) installText = 'You\u2019re already using it from your home screen.';
+    else if (ios) installText = 'In Safari, tap Share, then Add to Home Screen, then Add. It opens full screen, like an app.';
+    else if (android && !prompt) installText = 'In Chrome, tap \u22ee, then Install app or Add to Home screen. It opens full screen, like an app.';
+    else if (android) installText = 'Install it and it opens full screen, like an app.';
+    return {
+      seed: t.getFullYear() * 400 + t.getMonth() * 31 + t.getDate() + 7,
+      installText, canPrompt: !standalone && android && !!prompt,
+      doInstall: async () => { try { prompt.prompt(); await prompt.userChoice; } catch (e) {} window.__fhtInstall.e = null; this.forceUpdate(); },
+      back: () => { if (history.length > 1) history.back(); else window.location.hash = ''; },
+    };
+  }
+}
+</script>
+</body>
+</html>

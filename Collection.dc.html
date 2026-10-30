@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;display=swap">
+<style>
+html,body{margin:0;background:#fbf9f3;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+a{color:#1f3d44;text-decoration:none;}
+a:hover{color:#a8b82a;}
+::selection{background:#2f8a99;color:#fbf9f3;}
+input:focus{outline:none;}
+input::placeholder{color:#a3b5b2;}
+@keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+@keyframes fadein{from{opacity:0;}to{opacity:1;}}
+</style>
+</helmet>
+
+<div style="min-height:100dvh;color:#1f3d44;font-family:'Hanken Grotesk',sans-serif;background:#fbf9f3;">
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
+  <div style="max-width:480px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 18px) 22px calc(env(safe-area-inset-bottom) + 40px);">
+    <div style="display:flex;align-items:center;gap:6px;">
+      <button type="button" onClick="{{ goTrack }}" aria-label="Back to tracker" style="width:44px;height:44px;margin-left:-10px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;background:none;border:none;padding:0;cursor:pointer;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1f3d44" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+      </button>
+      <div style="font-size:22px;font-weight:800;letter-spacing:-.02em;">Your Dashboard</div>
+    </div>
+
+    <!-- month -->
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:24px;">
+      <button type="button" onClick="{{ prevMonth }}" disabled="{{ noPrev }}" aria-label="Previous month" style="width:40px;height:40px;flex:0 0 auto;border-radius:999px;background:#ffffff;border:1px solid #d6e2df;color:#1f3d44;font-family:inherit;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:{{ prevOp }};">‹</button>
+      <div style="text-align:center;min-width:0;">
+        <div style="font-size:19px;font-weight:800;letter-spacing:-.01em;">{{ monthTitle }}</div>
+        <div style="font-size:13px;color:#5b7479;margin-top:2px;">{{ seasonLabel }}</div>
+      </div>
+      <button type="button" onClick="{{ nextMonth }}" disabled="{{ noNext }}" aria-label="Next month" style="width:40px;height:40px;flex:0 0 auto;border-radius:999px;background:#ffffff;border:1px solid #d6e2df;color:#1f3d44;font-family:inherit;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:{{ nextOp }};">›</button>
+    </div>
+
+    <!-- calendar -->
+    <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:22px;text-align:center;font-size:12px;font-weight:700;letter-spacing:1px;color:#5b7479;">
+      <div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div><div>S</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:8px;">
+      <sc-for list="{{ cells }}" as="c" hint-placeholder-count="35">
+        <div onClick="{{ c.open }}" style="{{ c.style }}">
+          <sc-if value="{{ c.has }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;inset:2px;">
+              <x-import component-from-global-scope="avatar-canvas" from="./avatars.js" species="kolam" rarity="{{ c.rarity }}" seed="{{ c.seed }}" playing="false" density="0.4" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+            </div>
+            <span style="position:absolute;top:2px;left:2px;font-size:10px;font-weight:800;line-height:14px;padding:0 4px;border-radius:6px;background:rgba(251,249,243,.92);color:#1f3d44;">{{ c.n }}</span>
+          </sc-if>
+          <sc-if value="{{ c.empty }}" hint-placeholder-val="{{ true }}">
+            <span style="{{ c.numStyle }}">{{ c.n }}</span>
+            <sc-if value="{{ c.showDots }}" hint-placeholder-val="{{ false }}">
+              <span style="position:absolute;bottom:6px;left:0;right:0;display:flex;justify-content:center;gap:2px;">
+                <sc-for list="{{ c.dots }}" as="d" hint-placeholder-count="5"><span style="{{ d }}"></span></sc-for>
+              </span>
+            </sc-if>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- progress toward 25 -->
+    <div style="margin-top:24px;padding:16px;background:#ffffff;border:1px solid #d6e2df;border-radius:16px;">
+      <sc-if value="{{ isRevealed }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ viewAnimal }}" style="display:flex;align-items:center;gap:14px;cursor:pointer;">
+          <div style="width:56px;height:56px;flex:0 0 auto;position:relative;">
+            <x-import component-from-global-scope="avatar-canvas" from="./avatars.js" species="{{ species }}" rarity="legendary" seed="{{ animalSeed }}" playing="false" density="0.6" hint-size="56px,56px" style="width:100%;height:100%;"></x-import>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;justify-content:space-between;gap:8px;font-size:15px;"><span><strong style="font-size:16px;">{{ full }}</strong> of 25 full days</span><span style="color:#2f8a99;font-weight:700;">Revealed</span></div>
+            <div style="font-size:14px;color:#2f4d53;margin-top:4px;">{{ animalLine }}</div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ notRevealed }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div style="display:flex;justify-content:space-between;gap:8px;font-size:15px;"><span><strong style="font-size:16px;">{{ full }}</strong> of 25 full days</span><span style="color:#5b7479;text-align:right;">{{ progressNote }}</span></div>
+          <div style="height:8px;border-radius:999px;background:#e3ece9;margin-top:10px;overflow:hidden;"><div style="height:100%;width:{{ pct }}%;background:#2f8a99;border-radius:999px;"></div></div>
+          <sc-if value="{{ canReveal }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ reveal }}" style="margin-top:14px;width:100%;padding:16px;background:#2f8a99;color:#fbf9f3;border:none;border-radius:999px;font-family:inherit;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 0 24px #2f8a9955;">{{ revealLabel }}</button>
+          </sc-if>
+        </div>
+      </sc-if>
+    </div>
+
+    <!-- collection -->
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:32px;">
+      <div style="font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#5b7479;">Your collection</div>
+      <div style="font-size:13px;font-weight:600;color:#5b7479;">{{ foundLabel }}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:12px;">
+      <sc-for list="{{ shelf }}" as="sl" hint-placeholder-count="12">
+        <div onClick="{{ sl.open }}" style="{{ sl.style }}">
+          <sc-if value="{{ sl.found }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;inset:2px 2px 12px;">
+              <x-import component-from-global-scope="avatar-canvas" from="./avatars.js" species="{{ sl.species }}" rarity="legendary" seed="{{ sl.seed }}" playing="false" density="0.5" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+            </div>
+          </sc-if>
+          <sc-if value="{{ sl.locked }}" hint-placeholder-val="{{ true }}">
+            <span style="font-size:16px;font-weight:800;color:#9bb0ad;margin-bottom:8px;">?</span>
+          </sc-if>
+          <span style="position:absolute;bottom:3px;left:0;right:0;text-align:center;font-size:10px;font-weight:700;color:#5b7479;">{{ sl.m }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- options -->
+    <div style="display:flex;gap:10px;margin-top:32px;">
+      <button type="button" onClick="{{ goEdit }}" style="flex:1;padding:15px;background:#ffffff;color:#1f3d44;border:1px solid #d6e2df;border-radius:999px;font-family:inherit;font-weight:600;font-size:15px;cursor:pointer;">Edit habits</button>
+      <button type="button" onClick="{{ downloadCsv }}" style="flex:1;padding:15px;background:#ffffff;color:#1f3d44;border:1px solid #d6e2df;border-radius:999px;font-family:inherit;font-weight:600;font-size:15px;cursor:pointer;">Download CSV</button>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ============ REVEAL / NAME THE MONTH’S ANIMAL ============ -->
+<sc-if value="{{ hasAwaken }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:50;background:#fbf9f3;display:flex;justify-content:center;animation:fadein .4s ease both;">
+    <div style="max-width:480px;width:100%;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 34px) 22px calc(env(safe-area-inset-bottom) + 24px);">
+      <div style="text-align:center;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#6b8387;">{{ awKicker }}</div>
+      </div>
+      <div style="flex:1;min-height:300px;position:relative;margin:6px -22px;">
+        <x-import component-from-global-scope="avatar-canvas" from="./avatars.js" species="{{ awSpecies }}" rarity="legendary" seed="{{ awSeed }}" stage="creature" assemble="pattern" reveal="{{ awReveal }}" playing="true" density="1.5" hint-size="100%,100%" style="width:100%;height:100%;"></x-import>
+      </div>
+      <div style="text-align:center;animation:rise .7s {{ awDelay }} ease both;">
+        <div style="font-size:12px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#2f8a99;">{{ awTitle }}</div>
+        <div style="font-size:15px;color:#6b8387;margin-top:8px;line-height:1.45;">{{ awSub }}</div>
+        <input value="{{ nameDraft }}" onChange="{{ setNameDraft }}" placeholder="{{ awPlaceholder }}" maxlength="32" autocomplete="off" style="margin-top:18px;width:100%;text-align:center;background:rgba(251,249,243,.9);border:1px solid #d6e2df;border-radius:16px;padding:17px 16px;color:#1f3d44;font-family:inherit;font-size:22px;font-weight:800;letter-spacing:-.02em;">
+        <button onClick="{{ saveName }}" disabled="{{ cantName }}" style="margin-top:12px;width:100%;padding:18px;background:#1f3d44;color:#fbf9f3;border:none;border-radius:999px;font-family:inherit;font-weight:700;font-size:16px;cursor:pointer;opacity:{{ nameOpacity }};">Keep in collection</button>
+        <sc-if value="{{ canClose }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ closeAwaken }}" style="margin-top:6px;width:100%;padding:12px;background:none;border:none;color:#87999c;font-family:inherit;font-size:15px;cursor:pointer;">Close</button>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844}}">
+const KEY = '5ht_data';
+(() => { try { if (!localStorage.getItem(KEY)) for (let n = 20; n > 0; n--) { const v = localStorage.getItem('fht_v' + n); if (v) { localStorage.setItem(KEY, v); break; } } } catch (e) {} })();
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const RCOL = { common: '#7cc4b0', rare: '#a8b82a', legendary: '#2f8a99' };
+const SEASONS = [
+  { name: 'Cool & Dry', adj: 'Dawn', animal: 'bull' },
+  { name: 'Early Blossom', adj: 'Blossom', animal: 'parrot' },
+  { name: 'Flame Tree', adj: 'Flame', animal: 'tiger' },
+  { name: 'Jacaranda', adj: 'Violet', animal: 'deer' },
+  { name: 'Mango Gold', adj: 'Golden', animal: 'elephant' },
+  { name: 'First Rains', adj: 'Rain', animal: 'peacock' },
+  { name: 'Monsoon', adj: 'Monsoon', animal: 'fish' },
+  { name: 'Deep Green', adj: 'Jungle', animal: 'cobra' },
+  { name: 'Late Rains', adj: 'Tide', animal: 'tortoise' },
+  { name: 'Harvest', adj: 'Harvest', animal: 'owl' },
+  { name: 'Marigold', adj: 'Marigold', animal: 'swan' },
+  { name: 'Festive', adj: 'Festival', animal: 'horse' },
+];
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const mk = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+const today0 = () => { const t = new Date(); t.setHours(0,0,0,0); return t; };
+const dim = (y, m) => new Date(y, m + 1, 0).getDate();
+const isDone = (m, dn) => { const d = m && m.days[dn]; return !!d && m.habits.every((_, j) => d.ticks[j]); };
+function monthInfo(data, k) {
+  const m = data.months[k], [y, mo] = k.split('-').map(Number), s = SEASONS[mo - 1], nd = dim(y, mo - 1);
+  const cr = mulberry32(y * 100 + mo + 17), species = s.animal;
+  const kolams = {}, list = [];
+  if (m) { let idx = 0; for (let dn = 1; dn <= nd; dn++) if (isDone(m, dn)) { idx++; const seed = y * 10000 + mo * 100 + dn, r = mulberry32(seed)(); let rarity = 'common'; if (idx % 7 === 0) rarity = 'legendary'; else if (idx % 3 === 0) rarity = 'rare'; else if (r < 0.05) rarity = 'legendary'; else if (r < 0.2) rarity = 'rare'; const kk = { seed, rarity, idx, day: dn }; kolams[dn] = kk; list.push(kk); } }
+  const need = 25, full = list.length;
+  return { k, m, y, mo, s, nd, kolams, list, full, need, ready: full >= need, harvested: !!(m && m.harvested), creature: { species, name: (m && m.avatarName) || '', seed: y * 100 + mo } };
+}
+const go = p => { window.location.hash = p; };
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    let data = {};
+    try { data = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+    if (!data.months) data.months = {};
+    this.redirect = !Object.keys(data.months).length;
+    this.state = { data, awaken: null, awId: 0, naming: false, nameDraft: '' };
+  }
+  componentDidMount() { if (this.redirect) go('start'); }
+  persist(data) { this.setState({ data }); try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {} }
+  reveal(k) {
+    const data = { ...this.state.data, months: { ...this.state.data.months } };
+    data.months[k] = { ...data.months[k], harvested: Date.now() };
+    this.persist(data);
+    this.setState(s => ({ awaken: monthInfo(data, k), awId: s.awId + 1, naming: false, nameDraft: '' }));
+  }
+  saveName() {
+    const k = this.state.awaken && this.state.awaken.k, v = (this.state.nameDraft || '').trim();
+    if (!k || !v) return;
+    const data = { ...this.state.data, months: { ...this.state.data.months } };
+    data.months[k] = { ...data.months[k], avatarName: v };
+    this.persist(data);
+    this.setState({ awaken: null, naming: false, nameDraft: '' });
+  }
+  // one row per date: Date, Habit 1, Habit 1 done, ... Habit 5, Habit 5 done, Notes
+  downloadCsv() {
+    const esc = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+    const head = ['Date']; for (let j = 1; j <= 5; j++) head.push('Habit ' + j, 'Habit ' + j + ' done'); head.push('Notes');
+    const rows = [head];
+    Object.keys(this.state.data.months).sort().forEach(k => {
+      const m = this.state.data.months[k];
+      Object.keys(m.days || {}).map(Number).sort((x, y) => x - y).forEach(dn => {
+        const d = m.days[dn], row = [k + '-' + String(dn).padStart(2, '0')];
+        for (let j = 0; j < 5; j++) row.push(m.habits[j] || '', d.ticks && d.ticks[j] ? 'Yes' : 'No');
+        row.push(d.notes || ''); rows.push(row);
+      });
+    });
+    const blob = new Blob(['\ufeff' + rows.map(r => r.map(esc).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '5-habit-tracker.csv'; document.body.appendChild(a); a.click(); a.remove();
+  }
+  renderVals() {
+    const { data, awaken } = this.state, t = today0(), curK = mk(t);
+    const out = { ready: !this.redirect, hasAwaken: !!awaken };
+    if (this.redirect) return out;
+    const keys = Object.keys(data.months).sort();
+    const k = keys.includes(this.state.view) ? this.state.view : (keys.includes(curK) ? curK : keys[keys.length - 1]);
+    const ki = keys.indexOf(k), info = monthInfo(data, k), m = info.m, isCur = k === curK;
+    const HC = ['#2f8a99', '#e0b23a', '#5bb8c9', '#6b9e3a', '#c98a2e'];
+    // calendar cells
+    const cells = [];
+    for (let i = 0, lead = (new Date(info.y, info.mo - 1, 1).getDay() + 6) % 7; i < lead; i++) cells.push({ n: '', has: false, empty: false, style: 'visibility:hidden;aspect-ratio:1;', open: () => {} });
+    for (let dn = 1; dn <= info.nd; dn++) {
+      const kk = info.kolams[dn], date = new Date(info.y, info.mo - 1, dn), future = date > t, isT = date.getTime() === t.getTime();
+      const dd = m && m.days[dn], ticks = dd ? m.habits.map((_, j) => !!dd.ticks[j]) : [];
+      cells.push({
+        n: dn, has: !!kk, empty: !kk, rarity: kk ? kk.rarity : 'common', seed: kk ? kk.seed : 1,
+        style: 'aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;' + (future ? 'background:transparent;border:1px solid #e8efed;' : 'cursor:pointer;background:' + (kk ? '#fbf9f3' : '#ffffff') + ';border:' + (isT ? '1.5px solid #1f3d44' : '1px solid ' + (kk ? RCOL[kk.rarity] + '66' : '#e3ece9')) + ';'),
+        numStyle: 'font-size:14px;font-weight:700;margin-top:-6px;color:' + (future ? '#b7cbc7' : '#1f3d44') + ';',
+        showDots: !future && !kk && ticks.some(Boolean),
+        dots: [0, 1, 2, 3, 4].map(j => 'width:4px;height:4px;border-radius:50%;background:' + (ticks[j] ? HC[j] : '#d6e2df') + ';'),
+        open: () => { if (future || !m) return; try { sessionStorage.setItem('5ht_jump', k + '-' + dn); } catch (e) {} go('track'); },
+      });
+    }
+    // progress toward 25
+    let progressNote = '';
+    const toGo = Math.max(0, 25 - info.full);
+    if (isCur) { const left = info.nd - t.getDate() + (info.kolams[t.getDate()] ? 0 : 1); progressNote = toGo ? toGo + ' to go \u00b7 ' + left + ' day' + (left === 1 ? '' : 's') + ' left' : 'Ready to reveal'; }
+    else if (k > curK) progressNote = '';
+    else progressNote = info.ready ? 'Ready to reveal' : 'Month ended';
+    const named = !!info.creature.name, sp = info.creature.species;
+    // collection: 12 slots from the first month they used the app
+    const [fy, fm] = keys[0].split('-').map(Number), shelf = [];
+    let found = 0;
+    for (let i = 0; i < 12; i++) {
+      const y = fy + Math.floor((fm - 1 + i) / 12), mo = (fm - 1 + i) % 12 + 1, sk = y + '-' + String(mo).padStart(2, '0');
+      const si = data.months[sk] ? monthInfo(data, sk) : null, ok = !!(si && si.harvested);
+      if (ok) found++;
+      shelf.push({ m: MONTHS[mo - 1][0], found: ok, locked: !ok, species: ok ? si.creature.species : 'kolam', seed: ok ? si.creature.seed : 1,
+        style: 'aspect-ratio:1;border-radius:12px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;' + (ok ? 'background:#ffffff;border:1px solid #d6e2df;cursor:pointer;' : 'background:#f1f4f1;border:1px dashed #cfdcd8;'),
+        open: () => { if (ok) this.setState({ awaken: si, naming: true, nameDraft: si.creature.name }); } });
+    }
+    Object.assign(out, {
+      monthTitle: MONTHS[info.mo - 1] + ' ' + info.y, seasonLabel: info.s.name + ' season',
+      noPrev: ki <= 0, noNext: ki >= keys.length - 1, prevOp: ki <= 0 ? 0.3 : 1, nextOp: ki >= keys.length - 1 ? 0.3 : 1,
+      prevMonth: () => ki > 0 && this.setState({ view: keys[ki - 1] }), nextMonth: () => ki < keys.length - 1 && this.setState({ view: keys[ki + 1] }),
+      cells, full: Math.min(info.full, 31), pct: Math.min(100, Math.round(info.full / 25 * 100)), progressNote,
+      isRevealed: info.harvested, notRevealed: !info.harvested, canReveal: info.ready && !info.harvested,
+      revealLabel: 'Reveal your ' + MONTHS[info.mo - 1] + ' surprise', reveal: () => this.reveal(k),
+      species: sp, animalSeed: info.creature.seed, animalLine: named ? info.creature.name + ', your ' + sp : 'Your ' + sp + ' \u00b7 tap to name it',
+      viewAnimal: () => this.setState({ awaken: info, naming: true, nameDraft: info.creature.name }),
+      shelf, foundLabel: found + ' of 12 found',
+    });
+    if (awaken) {
+      const naming = this.state.naming;
+      Object.assign(out, {
+        awKicker: MONTHS[awaken.mo - 1] + ' ' + awaken.y + ' \u00b7 ' + awaken.s.name + ' season',
+        awSpecies: awaken.creature.species, awSeed: awaken.creature.seed,
+        awReveal: naming ? '0' : String(this.state.awId), awDelay: naming ? '0s' : '5.4s',
+        awTitle: 'Your ' + MONTHS[awaken.mo - 1] + ' ' + awaken.creature.species, awPlaceholder: 'Name your ' + awaken.creature.species,
+        awSub: naming ? 'Give your ' + awaken.creature.species + ' a name.' : 'Your pattern of ' + awaken.full + ' full days became this. What will you call it?',
+        nameDraft: this.state.nameDraft,
+        setNameDraft: e => this.setState({ nameDraft: e.target.value }),
+        cantName: !(this.state.nameDraft || '').trim(), nameOpacity: (this.state.nameDraft || '').trim() ? 1 : 0.35,
+        saveName: () => this.saveName(),
+        canClose: naming, closeAwaken: () => this.setState({ awaken: null, naming: false }),
+      });
+    }
+    out.downloadCsv = () => this.downloadCsv();
+    out.goTrack = () => go('track'); out.goEdit = () => go('edit');
+    return out;
+  }
+}
+</script>
+</body>
+</html>

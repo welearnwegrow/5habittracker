@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add to home screen guide</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;display=swap">
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<style>
+@keyframes igfade{from{opacity:0;}to{opacity:1;}}
+@keyframes igpop{from{opacity:0;transform:translateY(10px) scale(.97);}to{opacity:1;transform:none;}}
+</style>
+</helmet>
+<div style="font-family:'Hanken Grotesk',sans-serif;color:#1f3d44;">
+<sc-if value="{{ show }}" hint-placeholder-val="{{ true }}">
+<div style="{{ wrapStyle }}">
+  <sc-if value="{{ popup }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:rgba(31,61,68,.45);animation:igfade .25s ease both;"></div>
+  </sc-if>
+  <div style="{{ cardStyle }}">
+    <sc-if value="{{ popup }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+        <img src="icons/apple-touch-icon.png" alt="" width="52" height="52" style="border-radius:13px;border:1px solid #d6e2df;flex:0 0 auto;">
+        <div style="font-size:23px;font-weight:800;letter-spacing:-.02em;line-height:1.15;">{{ title }}</div>
+      </div>
+    </sc-if>
+
+    <!-- computer: scan to open on the phone -->
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ false }}">
+      <div style="text-align:center;">
+        <div style="font-size:17px;line-height:1.5;color:#2f4d53;text-align:left;text-wrap:pretty;">This app is made for your phone. <strong style="color:#1f3d44;">Scan this code with your phone’s camera</strong> to open it there, you’ll then be prompted to add it to your home screen.</div>
+        <div style="box-sizing:border-box;margin:18px auto 0;width:212px;height:212px;padding:12px;background:#ffffff;border:1px solid #d6e2df;border-radius:18px;">
+          <img src="{{ qrSrc }}" alt="QR code for welearnwegrow.github.io/5habittracker" width="186" height="186" style="display:block;width:186px;height:186px;image-rendering:pixelated;">
+        </div>
+        <div style="font-size:15px;font-weight:700;margin-top:12px;word-break:break-all;">welearnwegrow.github.io/5habittracker</div>
+        <div style="font-size:14px;color:#5b7479;margin-top:4px;">Or type this address into your phone’s browser.</div>
+      </div>
+    </sc-if>
+
+    <!-- phone: why, then steps for this browser -->
+    <sc-if value="{{ isPhone }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="padding:14px 16px;background:#ffffff;border:1px solid #d6e2df;border-radius:16px;">
+          <div style="font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#2f8a99;">Did you know?</div>
+          <div style="font-size:16px;line-height:1.5;color:#2f4d53;margin-top:6px;text-wrap:pretty;">Adding a web page to your home screen makes it work like an app. <strong style="color:#1f3d44;">One tap opens it full screen</strong>, with no browser bars.</div>
+          <div style="font-size:16px;line-height:1.5;color:#2f4d53;margin-top:8px;text-wrap:pretty;">5 Habit Tracker isn’t in an app store, which avoids store fees and helps keep it free.</div>
+        </div>
+        <sc-if value="{{ iosNote }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:12px;padding:12px 14px;background:#fdf3d7;border:1px solid #ecd48a;border-radius:14px;font-size:15px;line-height:1.45;color:#5a4a14;text-wrap:pretty;"><strong>Do this before choosing your habits.</strong> On iPhone, the home screen version keeps its own copy, so habits entered here in the browser won’t carry over.</div>
+        </sc-if>
+        <sc-if value="{{ standalone }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:16px;font-size:17px;line-height:1.5;font-weight:600;">You’re already using it from your home screen. You’re all set.</div>
+        </sc-if>
+        <sc-if value="{{ hasSteps }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="font-size:17px;font-weight:800;margin-top:20px;">{{ stepsTitle }}</div>
+            <div style="display:flex;flex-direction:column;margin-top:6px;">
+              <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid #e3ece9;">
+                  <span style="width:32px;height:32px;flex:0 0 auto;border-radius:50%;background:#1f3d44;color:#fbf9f3;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;">{{ s.n }}</span>
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-size:18px;line-height:1.35;color:#1f3d44;text-wrap:pretty;">{{ s.pre }}<strong>{{ s.key }}</strong>{{ s.post }}</div>
+                    <sc-if value="{{ s.hasNote }}" hint-placeholder-val="{{ false }}">
+                      <div style="font-size:14px;line-height:1.4;color:#5b7479;margin-top:3px;text-wrap:pretty;">{{ s.note }}</div>
+                    </sc-if>
+                  </div>
+                  <span style="width:48px;height:48px;flex:0 0 auto;border-radius:12px;background:#ffffff;border:1.5px solid #2f8a99;display:flex;align-items:center;justify-content:center;">
+                    <img src="{{ s.icon }}" alt="" width="28" height="28" style="display:block;">
+                  </span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ needsCopy }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ copyLink }}" style="margin-top:12px;width:100%;padding:15px;background:#ffffff;color:#1f3d44;border:1.5px solid #1f3d44;border-radius:999px;font-family:inherit;font-weight:700;font-size:16px;cursor:pointer;">{{ copyLabel }}</button>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:20px;">
+      <sc-if value="{{ canPrompt }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ doInstall }}" style="padding:17px;background:#2f8a99;color:#fbf9f3;border:none;border-radius:999px;font-family:inherit;font-weight:800;font-size:17px;cursor:pointer;">Install app</button>
+      </sc-if>
+      <sc-if value="{{ popup }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <sc-if value="{{ showDone }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ close }}" style="padding:17px;background:#1f3d44;color:#fbf9f3;border:none;border-radius:999px;font-family:inherit;font-weight:700;font-size:16px;cursor:pointer;">Done</button>
+          </sc-if>
+          <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ close }}" style="align-self:center;padding:6px 8px;background:none;border:none;color:#5b7479;font-family:inherit;font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:3px;cursor:pointer;">Use on this computer anyway</button>
+          </sc-if>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"popup":{"editor":"boolean","default":false},"onClose":{"editor":null},"$preview":{"width":390,"height":844}}'>
+const APP_URL = 'https://welearnwegrow.github.io/5habittracker/';
+// install prompt: Chrome fires this early, so catch it at load (shared with other pages)
+if (!window.__fhtInstall) { window.__fhtInstall = { e: null }; window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); window.__fhtInstall.e = e; }); }
+const svg = body => 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#1f3d44" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + body + '</svg>');
+const ICON = {
+  share: svg('<path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/>'),
+  add: svg('<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/>'),
+  dotsH: svg('<circle cx="5" cy="12" r="1.6" fill="#1f3d44"/><circle cx="12" cy="12" r="1.6" fill="#1f3d44"/><circle cx="19" cy="12" r="1.6" fill="#1f3d44"/>'),
+  dotsV: svg('<circle cx="12" cy="5" r="1.6" fill="#1f3d44"/><circle cx="12" cy="12" r="1.6" fill="#1f3d44"/><circle cx="12" cy="19" r="1.6" fill="#1f3d44"/>'),
+  menu: svg('<path d="M4 7h16M4 12h16M4 17h16"/>'),
+  toggle: svg('<rect x="2" y="7" width="20" height="10" rx="5" fill="#2f8a99" stroke="#2f8a99"/><circle cx="17" cy="12" r="3.6" fill="#ffffff" stroke="#ffffff"/>'),
+  check: svg('<path d="M5 13l4 4L19 7"/>'),
+  home: svg('<path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/>'),
+  external: svg('<path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>'),
+  compass: svg('<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>'),
+  install: svg('<path d="M12 4v11"/><path d="M8 11l4 4 4-4"/><path d="M5 20h14"/>'),
+};
+const st = (n, pre, key, post, icon, note) => ({ n, pre, key, post: post || '', icon: ICON[icon], note: note || '', hasNote: !!note });
+function detect() {
+  const ua = navigator.userAgent || '';
+  const ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  const android = /Android/.test(ua);
+  const inapp = /Instagram|FBAN|FBAV|FB_IAB|FBIOS|Line\/|Twitter|TikTok|musical_ly|Snapchat|LinkedInApp|Pinterest/i.test(ua);
+  if (!ios && !android) return 'desktop';
+  if (inapp) return ios ? 'inapp-ios' : 'inapp-android';
+  if (ios) return /CriOS/.test(ua) ? 'ios-chrome' : /FxiOS|EdgiOS|OPiOS|OPT\/|GSA\/|DuckDuckGo|YaBrowser|Brave/.test(ua) ? 'ios-other' : 'ios-safari';
+  if (/SamsungBrowser/.test(ua)) return 'samsung';
+  if (/Firefox/.test(ua)) return 'android-firefox';
+  return 'android-chrome';
+}
+const STEPS = {
+  'ios-safari': ['In Safari', [
+    st(1, 'Tap ', 'Share', '', 'share', 'On iOS 26, tap ••• next to the address bar first, then Share.'),
+    st(2, 'Scroll down and tap ', 'Add to Home Screen', '', 'add'),
+    st(3, 'Leave ', 'Open as Web App', ' switched on', 'toggle', 'You’ll only see this switch on iOS 26 and later.'),
+    st(4, 'Tap ', 'Add', ' in the top-right corner', 'check')]],
+  'ios-chrome': ['In Chrome', [
+    st(1, 'Tap ', 'Share', ' in the address bar', 'share', 'It’s at the top right, next to the address.'),
+    st(2, 'Scroll down and tap ', 'Add to Home Screen', '', 'add', 'Needs iOS 16.4 or later. If it’s missing, use the Safari steps instead.'),
+    st(3, 'Tap ', 'Add', ' in the top-right corner', 'check')]],
+  'ios-other': ['Open it in Safari first', [
+    st(1, 'Tap ', 'Copy link', ' below', 'share'),
+    st(2, 'Open ', 'Safari', ' and paste the link into the address bar', 'compass'),
+    st(3, 'In Safari, tap ', 'Share', ', then Add to Home Screen, then Add', 'add', 'On iOS 26, tap ••• next to the address bar first, then Share.')]],
+  'inapp-ios': ['You’re in an app’s built-in browser', [
+    st(1, 'Tap ', '•••', ' in the top-right corner', 'dotsH'),
+    st(2, 'Tap ', 'Open in browser', '', 'external', 'It may say Open in Safari or Open in external browser.'),
+    st(3, 'In Safari, ', 'add it to your home screen', '. This guide will show you how.', 'home')]],
+  'inapp-android': ['You’re in an app’s built-in browser', [
+    st(1, 'Tap ', '⋮', ' or ••• in the top-right corner', 'dotsV'),
+    st(2, 'Tap ', 'Open in browser', '', 'external', 'It may say Open in Chrome or Open in external browser.'),
+    st(3, 'In your browser, ', 'add it to your home screen', '. This guide will show you how.', 'home')]],
+  'android-chrome': ['In Chrome', [
+    st(1, 'Tap ', '⋮', ' in the top-right corner', 'dotsV'),
+    st(2, 'Tap ', 'Add to Home screen', '', 'add', 'It may say Install app instead. You may need to scroll.'),
+    st(3, 'Tap ', 'Install', '', 'install', 'It may say Add.')]],
+  'samsung': ['In Samsung Internet', [
+    st(1, 'Tap ', '≡', ' in the bottom-right corner', 'menu'),
+    st(2, 'Tap ', 'Add page to', '', 'add'),
+    st(3, 'Tap ', 'Home screen', '', 'home'),
+    st(4, 'Tap ', 'Add', '', 'check')]],
+  'android-firefox': ['In Firefox', [
+    st(1, 'Tap ', '⋮', ' (top or bottom right)', 'dotsV'),
+    st(2, 'Tap ', 'Add to Home screen', '', 'add', 'Don’t see it? Tap More first.'),
+    st(3, 'Tap ', 'Add', '', 'check')]],
+};
+class Component extends DCLogic {
+  state = { closed: false, copied: false };
+  componentDidMount() { this.poll = setInterval(() => this.forceUpdate(), 1500); }
+  componentWillUnmount() { clearInterval(this.poll); }
+  qr() {
+    if (this._qr) return this._qr;
+    try { if (!window.qrcode) return ''; const q = window.qrcode(0, 'M'); q.addData(APP_URL); q.make(); this._qr = q.createDataURL(6, 2); return this._qr; } catch (e) { return ''; }
+  }
+  close() { this.setState({ closed: true }); if (typeof this.props.onClose === 'function') this.props.onClose(); }
+  renderVals() {
+    const popup = this.props.popup === true || this.props.popup === 'true';
+    const kind = detect(), desktop = kind === 'desktop';
+    const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+    const prompt = window.__fhtInstall && window.__fhtInstall.e, canPrompt = !standalone && kind === 'android-chrome' && !!prompt;
+    const [stepsTitle, steps] = STEPS[kind] || ['', []];
+    return {
+      show: !(popup && this.state.closed), popup,
+      wrapStyle: popup ? 'position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:16px;' : '',
+      cardStyle: popup ? 'position:relative;width:100%;max-width:440px;max-height:calc(100dvh - 32px);overflow:auto;background:#fbf9f3;border-radius:24px;padding:22px 20px;box-shadow:0 20px 60px rgba(31,61,68,.3);animation:igpop .3s cubic-bezier(.2,.8,.2,1) both;' : '',
+      title: desktop ? 'Best on your phone' : 'Add it to your home screen',
+      isDesktop: desktop, isPhone: !desktop, qrSrc: desktop ? this.qr() : '',
+      standalone, hasSteps: !desktop && !standalone && !canPrompt, steps, stepsTitle: canPrompt ? '' : stepsTitle,
+      iosNote: !standalone && /ios|inapp-ios/.test(kind),
+      needsCopy: kind === 'ios-other' || kind.startsWith('inapp'),
+      copyLabel: this.state.copied ? 'Link copied' : 'Copy link',
+      copyLink: () => { try { navigator.clipboard.writeText(APP_URL).then(() => this.setState({ copied: true })); } catch (e) {} },
+      canPrompt,
+      doInstall: async () => { try { prompt.prompt(); await prompt.userChoice; } catch (e) {} window.__fhtInstall.e = null; this.close(); },
+      showDone: !desktop && !canPrompt && !kind.startsWith('inapp'),
+      close: () => this.close(),
+    };
+  }
+}
+</script>
+</body>
+</html>

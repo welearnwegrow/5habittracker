@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;display=swap">
+<style>
+html,body{margin:0;background:#fbf9f3;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+a{color:#1f3d44;text-decoration:none;}
+a:hover{color:#a8b82a;}
+::selection{background:#2f8a99;color:#fbf9f3;}
+input:focus{outline:none;}
+input::placeholder{color:#6b8387;}
+@keyframes sheetup{from{transform:translateY(100%);}to{transform:none;}}
+@keyframes shadein{from{opacity:0;}to{opacity:1;}}
+</style>
+</helmet>
+
+<div style="min-height:100dvh;color:#1f3d44;font-family:'Hanken Grotesk',sans-serif;background:#fbf9f3;position:relative;">
+
+  <sc-if value="{{ isReady }}" hint-placeholder-val="{{ true }}">
+  <div style="position:relative;z-index:1;max-width:480px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 48px) 22px calc(env(safe-area-inset-bottom) + 30px);">
+    <sc-if value="{{ hasKicker }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#2f8a99;margin-bottom:10px;">{{ kicker }}</div></sc-if>
+    <div style="font-size:38px;font-weight:800;letter-spacing:-.03em;line-height:1.02;text-wrap:balance;">{{ title }}</div>
+    <sc-if value="{{ hasBody }}" hint-placeholder-val="{{ false }}"><div style="font-size:17px;line-height:1.55;margin-top:14px;max-width:38ch;color:#2f4d53;text-wrap:pretty;">{{ body }}</div></sc-if>
+    <sc-if value="{{ isFirst }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top:20px;display:flex;flex-direction:column;border-bottom:1px solid #e3ece9;">
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-top:1px solid #e3ece9;"><span style="width:28px;height:28px;flex:0 0 auto;border-radius:50%;background:#1f3d44;color:#fbf9f3;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;">1</span><div style="font-size:16px;line-height:1.45;color:#2f4d53;text-wrap:pretty;"><strong style="color:#1f3d44;">Choose five small habits</strong> to keep this month.</div></div>
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-top:1px solid #e3ece9;"><span style="width:28px;height:28px;flex:0 0 auto;border-radius:50%;background:#1f3d44;color:#fbf9f3;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;">2</span><div style="font-size:16px;line-height:1.45;color:#2f4d53;text-wrap:pretty;"><strong style="color:#1f3d44;">Tick all five in a day</strong> and a new kolam is drawn for you.</div></div>
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-top:1px solid #e3ece9;"><span style="width:28px;height:28px;flex:0 0 auto;border-radius:50%;background:#1f3d44;color:#fbf9f3;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;">3</span><div style="font-size:16px;line-height:1.45;color:#2f4d53;text-wrap:pretty;"><strong style="color:#1f3d44;">Reach 25 full days</strong> to reveal this month’s surprise. That’s one grace day each week.</div></div>
+      </div>
+      <div style="font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#5b7479;margin-top:22px;">Your five habits</div>
+    </sc-if>
+
+    <sc-if value="{{ isChoice }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="margin-top:24px;display:flex;flex-direction:column;gap:8px;">
+          <sc-for list="{{ prevHabits }}" as="ph" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:14px;padding:15px 16px;background:#ffffff;border:1px solid #cfdcd8;border-radius:14px;">
+              <span style="{{ ph.dot }}"></span>
+              <span style="font-size:16px;font-weight:600;">{{ ph.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:22px;">
+          <button onClick="{{ keep }}" style="padding:18px;background:#1f3d44;color:#fbf9f3;border:none;border-radius:999px;font-family:inherit;font-weight:700;font-size:16px;cursor:pointer;">Keep these five</button>
+          <button onClick="{{ choose }}" style="padding:18px;background:rgba(251,249,243,.6);color:#1f3d44;border:1px solid #87999c;border-radius:999px;font-family:inherit;font-weight:600;font-size:16px;cursor:pointer;">Choose new habits</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isForm }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:{{ fieldsGap }};">
+          <sc-for list="{{ fields }}" as="f" hint-placeholder-count="5">
+            <label style="display:flex;align-items:center;gap:14px;background:#ffffff;border:1px solid #cfdcd8;border-radius:14px;padding:0 16px;">
+              <span style="{{ f.dot }}"></span>
+              <input value="{{ f.value }}" onChange="{{ f.onChange }}" placeholder="{{ f.placeholder }}" maxlength="40" style="flex:1;min-width:0;border:none;background:transparent;font-family:inherit;font-size:17px;font-weight:500;color:#1f3d44;padding:18px 0;">
+            </label>
+          </sc-for>
+        </div>
+        <button onClick="{{ save }}" disabled="{{ cantSave }}" style="position:relative;z-index:2;margin-top:22px;width:100%;padding:18px;background:{{ saveBg }};color:{{ saveColor }};border:1px solid {{ saveBorder }};border-radius:999px;font-family:inherit;font-weight:700;font-size:16px;cursor:pointer;box-shadow:0 6px 24px rgba(31,61,68,.16);">{{ saveLabel }}</button>
+        <sc-if value="{{ cantSave }}" hint-placeholder-val="{{ true }}">
+          <div style="font-size:14px;color:#5b7479;text-align:center;margin-top:10px;">Edit and add habits to begin</div>
+        </sc-if>
+        <sc-if value="{{ canCancel }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ cancel }}" style="margin-top:8px;width:100%;padding:14px;background:none;border:none;color:#5b7479;font-family:inherit;font-size:15px;cursor:pointer;">Cancel</button>
+        </sc-if>
+      </div>
+    </sc-if>
+  </div>
+  </sc-if>
+  <sc-if value="{{ showInstall }}" hint-placeholder-val="{{ false }}">
+    <dc-import name="InstallGuide" popup="{{ true }}" on-close="{{ skipInstall }}" hint-size="100%,0px"></dc-import>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844}}">
+const KEY = '5ht_data';
+(() => { try { if (!localStorage.getItem(KEY)) for (let n = 20; n > 0; n--) { const v = localStorage.getItem('fht_v' + n); if (v) { localStorage.setItem(KEY, v); break; } } } catch (e) {} })();
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const SEASON = ['Cool & Dry','Early Blossom','Flame Tree','Jacaranda','Mango Gold','First Rains','Monsoon','Deep Green','Late Rains','Harvest','Marigold','Festive'];
+const HCOL = ['#2f8a99','#e0b23a','#5bb8c9','#6b9e3a','#c98a2e'];
+const PH = ['e.g. 45 min workout','e.g. No phone after 8 pm','e.g. Read 10 pages','e.g. Drink 2L water','e.g. Journal'];
+const TRACKER = 'track';
+const ANIMAL = ['bull','parrot','tiger','deer','elephant','peacock','fish','cobra','tortoise','owl','swan','horse'];
+const mk = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+const today0 = () => { const t = new Date(); t.setHours(0,0,0,0); return t; };
+const dim = (y, m) => new Date(y, m + 1, 0).getDate();
+const dot = c => 'width:10px;height:10px;border-radius:50%;flex:0 0 auto;background:' + c + ';box-shadow:0 0 10px ' + c + ';';
+const go = p => { window.location.hash = p; };
+// install prompt: Chrome fires this early, so catch it at load
+if (!window.__fhtInstall) { window.__fhtInstall = { e: null }; window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); window.__fhtInstall.e = e; }); }
+const platform = () => {
+  const ua = navigator.userAgent || '';
+  if (/iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) return 'ios';
+  if (/Android/.test(ua)) return 'android';
+  return 'desktop';
+};
+const installed = () => (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    let data = {};
+    try { data = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+    if (!data.months) data.months = {};
+    const cur = mk(today0()), keys = Object.keys(data.months).sort();
+    const editing = (window.location.hash || '').indexOf('edit') >= 0;
+    let mode, draft = null;
+    if (editing && data.months[cur]) { mode = 'edit'; draft = [...data.months[cur].habits]; }
+    else if (data.months[cur]) mode = 'redirect';
+    else if (keys.length) mode = 'choice';
+    else { mode = 'first'; draft = ['45 min workout', 'No phone after 8 pm', '', '', '']; }
+    this.state = { data, mode, draft };
+  }
+  componentDidMount() {
+    if (this.state.mode === 'redirect') { go(TRACKER); return; }
+    if (this.state.mode === 'first' && !installed()) this.installTimer = setTimeout(() => this.setState({ install: true }), 3000);
+  }
+  componentWillUnmount() { clearTimeout(this.installTimer); }
+  prevKey() { const keys = Object.keys(this.state.data.months).sort().filter(k => k < mk(today0())); return keys[keys.length - 1]; }
+  commit(habits) {
+    const data = { ...this.state.data, months: { ...this.state.data.months } }, cur = mk(today0());
+    data.months[cur] = { days: {}, ...(data.months[cur] || {}), habits };
+    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+    go(TRACKER);
+  }
+  renderVals() {
+    const { mode, draft, data } = this.state, t = today0(), name = MONTHS[t.getMonth()], season = SEASON[t.getMonth()];
+    const pk = this.prevKey(), prev = pk ? data.months[pk] : null;
+    const need = 25;
+    const cantSave = !draft || draft.some(v => !v.trim());
+    let kicker = '', title = 'Five habits. Thirty days.', body = '';
+    if (mode === 'choice') {
+      let summary = '';
+      if (prev) {
+        const [y, mo] = pk.split('-').map(Number); let full = 0;
+        for (let d = 1; d <= dim(y, mo - 1); d++) { const dd = prev.days[d]; if (dd && prev.habits.every((_, j) => dd.ticks[j])) full++; }
+        summary = 'Last month you drew ' + full + ' kolam' + (full === 1 ? '' : 's') + (prev.harvested ? ' and revealed your ' + MONTHS[mo - 1] + ' ' + ANIMAL[mo - 1] + '.' : '.');
+      }
+      kicker = 'New month · ' + season + ' season'; title = 'Welcome to ' + name;
+      body = summary + ' A new hidden pattern begins today. Keep last month\u2019s five, or choose new ones.';
+    }
+    if (mode === 'edit') { kicker = 'Edit habits · ' + name; title = 'Your five for ' + name; body = 'Rename or swap any habit. Ticks you have already made stay with their slot.'; }
+    return {
+      isReady: mode !== 'redirect', isChoice: mode === 'choice', isForm: mode === 'first' || mode === 'edit' || mode === 'newedit', isFirst: mode === 'first', fieldsGap: mode === 'first' ? '10px' : '24px',
+      bgSeed: t.getFullYear() * 400 + t.getMonth() * 31 + t.getDate(),
+      kicker, hasKicker: !!kicker, title, body, hasBody: !!body,
+      prevHabits: prev ? prev.habits.map((label, i) => ({ label, dot: dot(HCOL[i]) })) : [],
+      keep: () => prev && this.commit([...prev.habits]),
+      choose: () => this.setState({ mode: 'newedit', draft: prev ? [...prev.habits] : ['', '', '', '', ''] }),
+      fields: (draft || []).map((v, i) => ({ value: v, placeholder: PH[i], dot: dot(HCOL[i]), onChange: e => { const d = [...this.state.draft]; d[i] = e.target.value; this.setState({ draft: d }); } })),
+      cantSave, saveBg: cantSave ? '#e3ece9' : '#1f3d44', saveColor: cantSave ? '#6b8387' : '#fbf9f3', saveBorder: cantSave ? '#cfdcd8' : '#1f3d44',
+      saveLabel: mode === 'edit' ? 'Save habits' : 'Begin',
+      save: () => { if (!cantSave) this.commit(draft.map(v => v.trim())); },
+      canCancel: mode === 'edit' || mode === 'newedit',
+      cancel: () => { if (mode === 'edit') go(TRACKER); else this.setState({ mode: 'choice', draft: null }); },
+      showInstall: !!this.state.install,
+      skipInstall: () => this.setState({ install: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>

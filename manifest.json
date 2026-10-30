@@ -1,7 +1,7 @@
 {
   "name": "5 Habit Tracker",
   "short_name": "5 Habits",
-  "description": "A five-habit tracker. Complete all five habits in a day to draw a new generative kolam, and keep going for 30 days to reveal a hidden avatar.",
+  "description": "A five-habit tracker. Complete all five habits in a day to draw a new generative kolam, and reach 25 full days in a month to reveal the month's surprise.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
